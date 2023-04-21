@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <img src="{{ user.profile_img.url }}" alt="Profile picture" class="img-thumbnail rounded-circle" width="200px" height="200px">
+    <h1>{{ user.username }}</h1>
+    <p>{{ user.first_name }} {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Date of birth: {{ user.birthdate }}</p>
+    <p>Gender: {{ user.get_gender_display }}</p>
+    <img src="{{ user.qr_code.url }}" alt="{{ user.qr_code.url }}" class="img-fluid">
+</div>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Scan QR Code{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>Scan a QR Code</h1>
+    <video id="preview" class="img-fluid mx-auto d-block"></video>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    const slugify = str =>
+    str
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    let url = "";
+    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    scanner.addListener('scan', function (content) {
+        console.log(content);
+        url =  'http://' + window.location.host + '/user/' + slugify(content) + '/profile';
+        location.assign(url);
+    });
+    Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }).catch(function (e) {
+        console.error(e);
+    })
+</script>
+{% endblock scripts %}
